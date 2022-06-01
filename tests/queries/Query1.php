@@ -1,30 +1,30 @@
 <?php
 return [
 <<<QUERY
-Query1
-    f1 af1
-    f2
-        mod1 1, 2, 3
-        mod2
-            submod 1
-            another true
-    f3
-    f4
-        mod1 1, string, true
+Root
+    Item1 Value1
+    Item2
+        SubItem21 Value1, Value2, Value3
+        SubItem22
+            SubSubItem221 Value1
+            SubSubItem222 Value2
+    Item3
+    Item4
+        SubItem41 Value1, Value2, Value3
 QUERY,
 [
-    'Query1' => [
-        'f1' => 'af1',
-        'f2' => [
-            'mod1' => ['1', '2', '3'],
-            'mod2' => [
-                'submod' => '1',
-                'another' => true,
+    'Root' => [
+        'Item1' => 'Value1',
+        'Item2' => [
+            'SubItem21' => ['Value1', 'Value2', 'Value3'],
+            'SubItem22' => [
+                'SubSubItem221' => 'Value1',
+                'SubSubItem222' => 'Value2',
             ],
         ],
-        'f3' => [],
-        'f4' => [
-            'mod1' => ['1', 'string', true],
+        'Item3' => [],
+        'Item4' => [
+            'SubItem41' => ['Value1', 'Value2', 'Value3'],
         ]
     ]
 ]
