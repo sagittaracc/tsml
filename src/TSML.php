@@ -31,13 +31,8 @@ class TSML
             $parent = &$result;
             foreach ($path as $depth => $key) {
                 if (!isset($parent[$key])) {
-                    if (isset($parts[1])) {
-                        $partOne = array_map('trim', explode(',', $parts[1]));
-                        if (count($partOne) === 1) {
-                            $partOne = $partOne[0];
-                        }
-                    }
-                    $parent[$key] = isset($parts[1]) ? $partOne : [];
+                    $partOne = isset($parts[1]) ? self::cast($parts[1]) : null;
+                    $parent[$key] = $partOne ? $partOne : [];
                     break;
                 }
 
@@ -46,5 +41,23 @@ class TSML
         }
 
         return $result;
+    }
+
+    private static function cast($arg)
+    {
+        $partOne = array_map('trim', explode(',', $arg));
+
+        foreach ($partOne as &$part) {
+            if ($part === 'true') {
+                $part = true;
+            }
+        }
+        unset($part);
+
+        if (count($partOne) === 1) {
+            $partOne = $partOne[0];
+        }
+
+        return $partOne;
     }
 }
