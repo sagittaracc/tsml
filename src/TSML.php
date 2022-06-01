@@ -8,12 +8,12 @@ namespace sagittaracc;
  */
 class TSML
 {
-    public static function parse($list, $indentation = '    ')
+    public static function parse($string, $indentation = '    ')
     {
         $result = array();
         $path = array();
 
-        foreach (explode("\n", $list) as $line) {
+        foreach (explode("\n", $string) as $line) {
             $depth = 0;
             while (substr($line, 0, strlen($indentation)) === $indentation) {
                 $depth += 1;
@@ -24,15 +24,15 @@ class TSML
                 array_pop($path);
             }
 
-            $line = trim($line);
-            $parts = explode(' ', $line, 2);
-            $path[$depth] = $parts[0];
+            $valueList = explode(' ', trim($line), 2);
+            $key = $valueList[0];
+            $value = isset($valueList[1]) ? $valueList[1] : null;
+            $path[$depth] = $key;
 
             $parent = &$result;
             foreach ($path as $depth => $key) {
                 if (!isset($parent[$key])) {
-                    $partOne = isset($parts[1]) ? self::cast($parts[1]) : null;
-                    $parent[$key] = $partOne ? $partOne : [];
+                    $parent[$key] = $value ? self::typecast($value) : [];
                     break;
                 }
 
@@ -43,21 +43,25 @@ class TSML
         return $result;
     }
 
-    private static function cast($arg)
+    private static function typecast($value)
     {
-        $partOne = array_map('trim', explode(',', $arg));
+        if (is_null($value)) {
+            return null;
+        }
 
-        foreach ($partOne as &$part) {
-            if ($part === 'true') {
-                $part = true;
+        $valueList = array_map('trim', explode(',', $value));
+
+        foreach ($valueList as &$valueItem) {
+            if ($valueItem === 'true') {
+                $valueItem = true;
             }
         }
-        unset($part);
+        unset($valueItem);
 
-        if (count($partOne) === 1) {
-            $partOne = $partOne[0];
+        if (count($valueList) === 1) {
+            $valueList = $valueList[0];
         }
 
-        return $partOne;
+        return $valueList;
     }
 }
