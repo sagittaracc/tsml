@@ -45,10 +45,6 @@ class TSML
 
     private static function typecast($value)
     {
-        if (is_null($value)) {
-            return null;
-        }
-
         $valueList = array_map('trim', explode(',', $value));
 
         foreach ($valueList as &$valueItem) {
