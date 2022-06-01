@@ -11,6 +11,11 @@ Root
     Item3
     Item4
         SubItem41 Value1, Value2, Value3
+        SubItem42 1.2
+        SubItem43 true
+        SubItem44 false
+    Item5
+        SubItem51 string1, string2
 QUERY,
 [
     'Root' => [
@@ -25,7 +30,13 @@ QUERY,
         'Item3' => [],
         'Item4' => [
             'SubItem41' => ['Value1', 'Value2', 'Value3'],
-        ]
+            'SubItem42' => 1.2,
+            'SubItem43' => true,
+            'SubItem44' => false,
+        ],
+        'Item5' => [
+            'SubItem51' => ['string1', 'string2'],
+        ],
     ]
 ]
 ];

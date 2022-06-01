@@ -12,6 +12,6 @@ final class TsmlTest extends TestCase
         $query = require('tests/queries/Query1.php');
         $expected = $query[1];
         $actual = TSML::parse($query[0]);
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 }

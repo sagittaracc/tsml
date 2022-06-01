@@ -8,7 +8,14 @@ namespace sagittaracc;
  */
 class TSML
 {
-    public static function parse($string, $indentation = '    ')
+    /**
+     * Парсит строку формата TSML
+     * @param string $string
+     * @param string $indentation
+     * @param boolean $typecasting нужно ли пытаться преобразовывать типы значений
+     * @return array
+     */
+    public static function parse($string, $indentation = '    ', $typecasting = true)
     {
         $result = array();
         $path = array();
@@ -32,7 +39,15 @@ class TSML
             $parent = &$result;
             foreach ($path as $depth => $key) {
                 if (!isset($parent[$key])) {
-                    $parent[$key] = $value ? self::typecast($value) : [];
+                    if ($value) {
+                        if ($typecasting) {
+                            $value = self::typecast($value);
+                        }
+                    }
+                    else {
+                        $value = [];
+                    }
+                    $parent[$key] = $value;
                     break;
                 }
 
@@ -42,14 +57,21 @@ class TSML
 
         return $result;
     }
-
+    /**
+     * Попытка преобразовать типы значений
+     * @param string $value
+     * @return mixed
+     */
     private static function typecast($value)
     {
         $valueList = array_map('trim', explode(',', $value));
 
         foreach ($valueList as &$valueItem) {
-            if ($valueItem === 'true') {
-                $valueItem = true;
+            if (self::checkBoolean($valueItem)) {
+                $valueItem = filter_var($valueItem, FILTER_VALIDATE_BOOLEAN);
+            }
+            else if (is_numeric($valueItem)) {
+                $valueItem = $valueItem + 0;
             }
         }
         unset($valueItem);
@@ -59,5 +81,14 @@ class TSML
         }
 
         return $valueList;
+    }
+    /**
+     * Проверка на boolean
+     * @param string $string
+     * @return boolean
+     */
+    private static function checkBoolean($string){
+        $string = strtolower($string);
+        return (in_array($string, array('true', 'false'), true));
     }
 }
