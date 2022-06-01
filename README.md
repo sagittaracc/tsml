@@ -22,6 +22,8 @@ Root
 
 ## Использование
 ```php
+use sagittaracc\TSML;
+
 TSML::parse(<TSML string>);
 
 [
