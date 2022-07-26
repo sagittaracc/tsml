@@ -16,6 +16,9 @@ Root
         SubItem44 false
     Item5
         SubItem51 string1, string2
+    {Item6 with spaces}
+        SubItem61 Value1
+        {Item62 with spaces}
 QUERY,
 [
     'Root' => [
@@ -37,6 +40,10 @@ QUERY,
         'Item5' => [
             'SubItem51' => ['string1', 'string2'],
         ],
+        'Item6 with spaces' => [
+            'SubItem61' => 'Value1',
+            'Item62 with spaces' => [],
+        ]
     ]
 ]
 ];

@@ -9,6 +9,48 @@ namespace sagittaracc;
 class TSML
 {
     /**
+     * Символ используемый для выделения начала цельной строки внутри которой не учитываются пробелы
+     */
+    const STRING_BEGIN = '\{'; 
+    /**
+     * Символ используемый для выделения конца цельной строки внутри которой не учитываются пробелы
+     */
+    const STRING_END = '\}';
+    /**
+     * Символ используемый для временной замены пробела в строке
+     */
+    const STRING_SPACE_ESCAPE = '!@#';
+    /**
+     * Уберечь цельную строку от дробления на ключ и значение
+     * @param string $string
+     * @return string
+     */
+    private static function saveString($string)
+    {
+        preg_match('/' . self::STRING_BEGIN . '(.*?)' . self::STRING_END . '/', $string, $matches);
+
+        if (isset($matches[1])) {
+            $string = str_replace($matches[1], str_replace(' ', self::STRING_SPACE_ESCAPE, $matches[1]), $string);
+        }
+
+        return $string;
+    }
+    /**
+     * Выделить цельную строку после её сохранения (экранирования)
+     * @param string $string
+     * @return string
+     */
+    private static function revealString($string)
+    {
+        preg_match('/' . self::STRING_BEGIN . '(.*?)' . self::STRING_END . '/', $string, $matches);
+
+        if (isset($matches[1])) {
+            $string = str_replace(self::STRING_SPACE_ESCAPE, ' ', $matches[1]);
+        }
+
+        return $string;
+    }
+    /**
      * Парсит строку формата TSML
      * @param string $string
      * @param string $indentation
@@ -31,8 +73,9 @@ class TSML
                 array_pop($path);
             }
 
+            $line = self::saveString($line);
             $valueList = explode(' ', trim($line), 2);
-            $key = $valueList[0];
+            $key = self::revealString($valueList[0]);
             $value = isset($valueList[1]) ? $valueList[1] : null;
             $path[$depth] = $key;
 
