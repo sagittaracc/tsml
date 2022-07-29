@@ -82,7 +82,7 @@ class TSML
             $parent = &$result;
             foreach ($path as $depth => $key) {
                 if (!isset($parent[$key])) {
-                    if ($value) {
+                    if (isset($value)) {
                         if ($typecasting) {
                             $value = self::typecast($value);
                         }

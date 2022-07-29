@@ -14,4 +14,12 @@ final class TsmlTest extends TestCase
         $actual = TSML::parse($query[0]);
         $this->assertSame($expected, $actual);
     }
+
+    public function testTsmlWithZeroValue(): void
+    {
+        $query = require('tests/queries/Query2.php');
+        $expected = $query[1];
+        $actual = TSML::parse($query[0]);
+        $this->assertSame($expected, $actual);
+    }
 }
